@@ -1,0 +1,32 @@
+{
+  "name": "smartlyricsapi",
+  "version": "1.0.0",
+  "description": "api for smartlyrics app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kdgiddyup/SmartLyricsAPI.git"
+  },
+  "author": "kdgiddyup",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cheerio": "^1.0.0-rc.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.13.4",
+    "express-session": "^1.15.3",
+    "genius-api": "^0.3.0",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.11.0",
+    "morgan": "^1.8.2",
+    "request-promise": "^4.2.1"
+  },
+  "bugs": {
+    "url": "https://github.com/kdgiddyup/SmartLyricsAPI/issues"
+  },
+  "homepage": "https://github.com/kdgiddyup/SmartLyricsAPI#readme"
+}
