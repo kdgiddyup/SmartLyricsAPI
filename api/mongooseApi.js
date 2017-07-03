@@ -33,10 +33,14 @@ var Favorite = require("../app/models/favorite.js");
 var path = require("path"); 
 
 module.exports = function(app) {
-
-// Route to save our favorited song to mongoDB via mongoose
-app.post("/api/favorite", function(req, res) {
-  // req.body should include title , artist, song_id, image url, lyrics page url
+  // default route
+  app.get("/", function(req,res){
+    res.send("SmartLyrics API by kdgiddup")
+  })
+  
+  // Route to save our favorited song to mongoDB via mongoose
+  app.post("/api/favorite", function(req, res) {
+    // req.body should include title , artist, song_id, image url, lyrics page url
 
   // add currently logged-in user to this model
   req.body.user = req.user;
