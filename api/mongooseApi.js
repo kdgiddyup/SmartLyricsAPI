@@ -84,5 +84,6 @@ app.get("/api/remove/:id", function(req,res){
    });
 })
 
+// auth routes
 
 };

@@ -6,9 +6,10 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const app = express()  
 
+app.use(allowCrossDomain);
 
 // dev tool: environment processor
-require('dotenv').config()
+require('dotenv').config();
 
 app.use(logger("dev"));
 
