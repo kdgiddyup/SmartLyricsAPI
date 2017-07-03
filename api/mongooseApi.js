@@ -1,26 +1,32 @@
 // set up mongoose connection
 
 var mongoose = require("mongoose");
-// it would be nice to have promise behavior for simpler code
-mongoose.Promise = Promise;
 
-// local or deployed? Use the right mongo db
-mongoose.connect(process.env.MONGODB_URI);
-//mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/smartlyrics" );
+// Use promise library
+//mongoose.Promise = require('bluebird');
 
-// Hook mongoose connection to db
-var db = mongoose.connection;
+// Using `mongoose.connect`...
 
+var promise = mongoose.connect(
+  // connection URI
+  process.env.MONGODB_URI, 
+  // connection options
+  {
+    useMongoClient: true
+  }
+  );
+  
 // Show any mongoose errors
-db.on("error", function(error) {
+promise.then(function(db){
+  db.on("error", function(error) {
   console.log("Mongoose Error: ", error);
-});
+  });
 
-// Once connected to the db through mongoose, log a success message
-db.once("open", function() {
-  console.log("Mongoose connection successful.");
-}); 
-
+  // Once connected to the db through mongoose, log a success message
+  db.once("open", function() {
+    console.log("Mongoose connection successful.");
+  });
+})
 // we'll need our Favorite model
 var Favorite = require("../app/models/favorite.js");
 
