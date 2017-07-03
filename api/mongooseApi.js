@@ -1,32 +1,9 @@
-// set up mongoose connection
+// Generic error handler used by all endpoints.
+function handleError(res, reason, message, code) {
+  console.log("ERROR: " + reason);
+  res.status(code || 500).json({"error": message});
+}
 
-var mongoose = require("mongoose");
-
-// Use promise library
-//mongoose.Promise = require('bluebird');
-
-// Using `mongoose.connect`...
-
-var promise = mongoose.connect(
-  // connection URI
-  process.env.MONGODB_URI, 
-  // connection options
-  {
-    useMongoClient: true
-  }
-  );
-  
-// Show any mongoose errors
-promise.then(function(db){
-  db.on("error", function(error) {
-  console.log("Mongoose Error: ", error);
-  });
-
-  // Once connected to the db through mongoose, log a success message
-  db.once("open", function() {
-    console.log("Mongoose connection successful.");
-  });
-})
 // we'll need our Favorite model
 var Favorite = require("../app/models/favorite.js");
 

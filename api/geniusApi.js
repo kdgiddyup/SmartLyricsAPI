@@ -1,3 +1,9 @@
+// Generic error handler used by all endpoints.
+function handleError(res, reason, message, code) {
+  console.log("ERROR: " + reason);
+  res.status(code || 500).json({"error": message});
+}
+
 // scraping tools
 // get html from URLs
 var request = require("request-promise");
@@ -16,7 +22,7 @@ module.exports = function(app) {
 // post request to search lyrics; using post because text entry might be lengthy
   app.post("/api/search/", function(req, res) {
     if (req.body.input === "")
-      res.json({message:"No search terms were entered!"})
+      handleError(res, "Invalid input", "Must provide search terms.", 400);
     else {
       genius.search(req.body.input).then(function(response) {
         // Genius limits response to max 10
@@ -76,7 +82,7 @@ app.post("/api/lyrics", function(req,res){
       res.json(lyrics);
     })
     .catch(function (err) {
-        // Crawling failed or Cheerio choked... 
+        handleError(res, "Problemw with resource", "Could not return lyrics", 400); 
     });
 
 });

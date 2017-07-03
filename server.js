@@ -5,6 +5,8 @@ const express=require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const app = express() 
+const dotenv=require("dotenv");
+dotenv.config();
 
 // BodyParser makes it easy for our server to interpret data sent to it.
 // The code below is pretty standard.
@@ -46,16 +48,6 @@ promise.then(function(database){
 
 
 
-// ===================================================
-// ROUTES
-// geniusApi routes handle requests to the Genius api.
-// mongooseAPI routes handle mongoDB actions.
-// htmlRoutes serves the homepage
-// ===================================================
-
-require("./api/geniusApi")(app);
-require("./api/mongooseApi")(app);
-
 
 
 // Sets an initial port. We"ll use this later in our listener
@@ -67,3 +59,14 @@ var PORT = process.env.PORT || 8080;
 app.listen(PORT, function() {
   console.log(`App listening on port ${PORT}`);
 });
+
+
+// ===================================================
+// ROUTES
+// geniusApi routes handle requests to the Genius api.
+// mongooseAPI routes handle mongoDB actions.
+// htmlRoutes serves the homepage
+// ===================================================
+
+require("./api/geniusApi")(app);
+require("./api/mongooseApi")(app);
