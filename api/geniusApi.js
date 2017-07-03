@@ -4,6 +4,7 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
+var path = require("path");
 // scraping tools
 // get html from URLs
 var request = require("request-promise");
@@ -18,7 +19,9 @@ var genius = new api(process.env.GENIUS_CLIENT_ACCESS_TOKEN);
 
 
 module.exports = function(app) {
-  
+app.get("/", function(req,res){
+
+}) 
 // post request to search lyrics; using post because text entry might be lengthy
   app.post("/api/search/", function(req, res) {
     if (req.body.input === "")

@@ -18,34 +18,35 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 // set up mongoose connection
 
 var mongoose = require("mongoose");
-
-// Use promise library
-//mongoose.Promise = require('bluebird');
-
 // Using `mongoose.connect`...
+//mongoose.Promise = Promise;
 
-var promise = mongoose.connect(
-  // connection URI
-  process.env.MONGODB_URI, 
-  // connection options
-  {
-    useMongoClient: true
-  }
+mongoose.connect(  
+  'mongodb://localhost/smartlyrics' || process.env.MONGODB_URI,
+  { useMongoClient: true}
   );
-  
-// Show any mongoose errors
-promise.then(function(database){
-  db = database;
-  db.on("error", function(error) {
+
+var db = mongoose.connection;
+
+db.on("error", function(error) {
   console.log("Mongoose error: ", error);
-  });
+});
 
-  // Once connected to the db through mongoose, log a success message
-  db.once("open", function() {
-    console.log("Mongoose connection successful.");
-  });
-})
+// Once connected to the db through mongoose, log a success message
+db.once("open", function() {
+  console.log("Mongoose connection successful.");
+});
 
+// ===================================================
+// ROUTES
+// geniusApi routes handle requests to the Genius api.
+// mongooseAPI routes handle mongoDB actions.
+// htmlRoutes serves the homepage
+// ===================================================
+
+require("./api/htmlRoutes")(app);
+require("./api/geniusApi")(app);
+require("./api/mongooseApi")(app);
 
 
 
@@ -61,12 +62,3 @@ app.listen(PORT, function() {
 });
 
 
-// ===================================================
-// ROUTES
-// geniusApi routes handle requests to the Genius api.
-// mongooseAPI routes handle mongoDB actions.
-// htmlRoutes serves the homepage
-// ===================================================
-
-require("./api/geniusApi")(app);
-require("./api/mongooseApi")(app);
