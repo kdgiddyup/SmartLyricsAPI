@@ -20,9 +20,9 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 var mongoose = require("mongoose");
 // Using `mongoose.connect`...
 //mongoose.Promise = Promise;
-
+var MONGODB = process.env.MONGODB_URI;
 mongoose.connect(  
-  process.env.MONGODB_URI,
+  MONGODB,
   { useMongoClient: true}
   );
 
@@ -60,5 +60,3 @@ var PORT = process.env.PORT || 8080;
 app.listen(PORT, function() {
   console.log(`App listening on port ${PORT}`);
 });
-
-

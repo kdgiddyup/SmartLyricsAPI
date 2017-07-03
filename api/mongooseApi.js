@@ -16,12 +16,10 @@ module.exports = function(app) {
   })
   
   // Route to save our favorited song to mongoDB via mongoose
-  app.post("/api/favorite", function(req, res) {
+  app.post("/api/favorites", function(req, res) {
     // req.body should include title , artist, song_id, image url, lyrics page url
 
-  // add currently logged-in user to this model
-  req.body.user = req.user;
-  
+ 
   var favorite = new Favorite(req.body);
 
   // Save new "Favorite" object to mongoDB
@@ -41,7 +39,7 @@ module.exports = function(app) {
 // Route to retrieve and show favorited articles
 app.get("/api/favorites", function(req,res){
   // find favorites of currently logged-in user
-  Favorite.find({ user: req.user }, function(err, found){
+  Favorite.find({ }, function(err, found){
     if(err){
       console.log(err);
     }
