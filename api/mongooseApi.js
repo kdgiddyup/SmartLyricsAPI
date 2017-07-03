@@ -12,7 +12,7 @@ var path = require("path");
 module.exports = function(app) {
   // default route
   app.get("/", function(req,res){
-    res.send("SmartLyrics API by kdgiddup")
+    res.send("SmartLyrics API by kdgiddyup")
   })
   
   // Route to save our favorited song to mongoDB via mongoose

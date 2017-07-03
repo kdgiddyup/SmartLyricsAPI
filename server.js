@@ -22,7 +22,7 @@ var mongoose = require("mongoose");
 //mongoose.Promise = Promise;
 
 mongoose.connect(  
-  'mongodb://localhost/smartlyrics' || process.env.MONGODB_URI,
+  process.env.MONGODB_URI,
   { useMongoClient: true}
   );
 
