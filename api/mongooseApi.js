@@ -4,22 +4,15 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
-// we'll need our Favorite model
+// we'll need our models
 var Favorite = require("../app/models/favorite.js");
-
-var path = require("path"); 
+var User = require("../app/models/user.js");
 
 module.exports = function(app) {
-  // default route
-  app.get("/", function(req,res){
-    res.send("SmartLyrics API by kdgiddyup")
-  })
   
   // Route to save our favorited song to mongoDB via mongoose
   app.post("/api/favorites", function(req, res) {
-    // req.body should include title , artist, song_id, image url, lyrics page url
-
- 
+    // req.body should include title , artist, song_id, image url, lyrics page url 
   var favorite = new Favorite(req.body);
 
   // Save new "Favorite" object to mongoDB
@@ -59,6 +52,5 @@ app.get("/api/remove/:id", function(req,res){
    });
 })
 
-// auth routes
 
 };

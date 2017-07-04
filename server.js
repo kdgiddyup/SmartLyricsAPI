@@ -18,9 +18,10 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 // set up mongoose connection
 
 var mongoose = require("mongoose");
-// Using `mongoose.connect`...
-//mongoose.Promise = Promise;
-var MONGODB = process.env.MONGODB_URI;
+var MONGODB = process.env.MONGODB_URI || "mongodb://localhost/smartlyrics";
+
+console.log("using this db:",MONGODB);
+
 mongoose.connect(  
   MONGODB,
   { useMongoClient: true}

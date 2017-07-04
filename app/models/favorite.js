@@ -35,5 +35,5 @@ var FavoriteSchema = new Schema({
 // Make a Favorite model with the Favorite schema
 var Favorite = mongoose.model("Favorite", FavoriteSchema);
 
-// Export the Note model
+// Export the Favorite model
 module.exports = Favorite;

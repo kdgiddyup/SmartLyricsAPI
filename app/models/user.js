@@ -1,28 +1,12 @@
-// Require mongoose
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
+ 
+var userSchema = new mongoose.Schema({
+  // basic-auth-mongoose plugin will add user/pass fields
+});
 
-// Create a Schema class with mongoose
-var Schema = mongoose.Schema;
+//To add authentication functionality, all you need to do is plugin basic-auth, and create your new User model:
+userSchema.plugin(require('basic-auth-mongoose'));
+var User = mongoose.model('User', userSchema);
 
-// Create a User schema with the Schema class
-// stores User name and password hash
-
-var UserSchema = new Schema({
-  // user: a string
-  username: {
-    type: String,
-    unique: true,
-    validate: {
-      validator: function(val){return /^[a-z0-9\_\-]+$/i.test(val);}
-    }
-  },
-  password: {
-    type: String
-  }
-})
-
-// Make a User model with the User schema
-var User = mongoose.model("User", UserSchema);
-
-// Export the User model
 module.exports = User;
+
