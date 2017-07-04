@@ -4,7 +4,8 @@
 const express=require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
-const app = express() 
+const app = express();
+
 const dotenv=require("dotenv");
 dotenv.config();
 
@@ -14,6 +15,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" })); 
+
+// Static directory
+app.use(express.static(__dirname + "/app/public"));
 
 // set up mongoose connection
 
