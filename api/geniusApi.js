@@ -36,7 +36,10 @@ module.exports = function(app) {
         // get all of this user's favorite songs
         axios.get(`https://smartlyricsapi.herokuapp.com/api/favorites/${req.body.user}`)
             .then(function(favorites){
-              console.log(favorites);
+
+              // we only want the data part of the returned object
+              favorites=favorites.data;
+              
               // loop through each element of response to format results, including comparing 'favorite' status of any songs
                 for (var i=0; i<raw.length; i++) {
                   var searchSong = raw[i].result;
@@ -61,6 +64,7 @@ module.exports = function(app) {
                 } // end search result loop
 
                 // send updated array out to front end      
+                console.log(songs);
                 res.json({songs})
                   })
                   .catch(function (error) {
