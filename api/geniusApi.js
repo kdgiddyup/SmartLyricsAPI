@@ -36,7 +36,7 @@ module.exports = function(app) {
         // get all of this user's favorite songs
         axios.get(`https://smartlyricsapi.herokuapp.com/api/favorites/${req.body.user}`)
             .then(function(favorites){
-              
+              console.log(favorites);
               // loop through each element of response to format results, including comparing 'favorite' status of any songs
                 for (var i=0; i<raw.length; i++) {
                   var searchSong = raw[i].result;
