@@ -4,7 +4,8 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
-var path = require("path");
+var axios = require("axios");
+
 // scraping tools
 // get html from URLs
 var request = require("request-promise");
@@ -19,11 +20,9 @@ var genius = new api(process.env.GENIUS_CLIENT_ACCESS_TOKEN);
 
 
 module.exports = function(app) {
-app.get("/", function(req,res){
 
-}) 
 // post request to search lyrics; using post because text entry might be lengthy
-  app.post("/api/search/", function(req, res) {
+  app.post("/api/search", function(req, res) {
     if (req.body.input === "")
       handleError(res, "Invalid input", "Must provide search terms.", 400);
     else {
@@ -34,21 +33,40 @@ app.get("/", function(req,res){
         // we'll push our parsed song data into this array
         var songs = [];
 
-        // loop through each element of response
-        for (var i=0;i<raw.length;i++){
-          var song = raw[i].result;
-          songs.push({
-            title: song.title,
-            song_id: song.id,
-            thumb: song.song_art_image_thumbnail_url,
-            lyrics: song.url,
-            artist: song.primary_artist.name
-          });
-          
-        }; // end songs for loop
-    // send songs object back to front end 
-    res.json({songs});
-      })
+        // get all of this user's favorite songs
+        axios.get(`/api/favorites/${req.body.user}`)
+            .then(function(favorites){
+              
+              // loop through each element of response to format results, including comparing 'favorite' status of any songs
+                for (var i=0; i<raw.length; i++) {
+                  var searchSong = raw[i].result;
+                
+                    // loop through this user's favorites
+                    for (var j=0; j<favorites.length;j++){
+                      if (searchSong.id == favorites[j].song_id)
+                        searchSong.favorite = "favorite"
+                      else
+                        searchSong.favorite="";
+                    } // end use favorites loop
+                  
+                  //add this song, with updated favorite status, to songs array 
+                  songs.push({
+                    title: searchSong.title,
+                    song_id: searchSong.id,
+                    thumb: searchSong.song_art_image_thumbnail_url,
+                    lyrics: searchSong.url,
+                    artist: searchSong.primary_artist.name,
+                    favorite: searchSong.favorite
+                });
+                } // end search result loop
+
+                // send updated array out to front end      
+                res.json({songs})
+                  })
+                  .catch(function (error) {
+                      console.log(error);
+              });          
+      }) // end genius search api call
       .catch(function(error) {
         console.error(error)
       });  // end genius api call

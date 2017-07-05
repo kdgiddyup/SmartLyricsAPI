@@ -12,9 +12,11 @@ module.exports = function(app) {
   
   // Route to save our favorited song to mongoDB via mongoose
   app.post("/api/favorites", function(req, res) {
-    // req.body should include title , artist, song_id, image url, lyrics page url 
+  
+  // req.body should include title , artist, song_id, image url, lyrics page url 
   var favorite = new Favorite(req.body);
   console.log("New favorite:",favorite);
+  
   // Save new "Favorite" object to mongoDB
   favorite.save(function(error, doc) {
     // Send any errors to the browser
@@ -29,11 +31,11 @@ module.exports = function(app) {
 });
 
 
-// Route to retrieve and show favorited articles
-app.get("/api/favorites", function(req,res){
+// Route to retrieve and show user's favorited articles
+app.get("/api/favorites/:user", function(req,res){
   console.log("retrieving favorites");
-  // find favorites of currently logged-in user
-  Favorite.find({ }, function(err, found){
+  // find favorites of currently logged-in user, passed through as a query parameter
+  Favorite.find({ user:req.params.user }, function(err, found){
     if(err){
       console.log(err);
     }
