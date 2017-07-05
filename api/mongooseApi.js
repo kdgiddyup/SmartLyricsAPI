@@ -60,10 +60,12 @@ app.get("/api/remove/:id", function(req,res){
         console.log("new user:",newUser);
         newUser.save(function(error,user){
             if (error) {
-                console.log("Save error",error);
+                if (error.code == 11000) {
+                  var message = "That username already exists. Try again!"
+                };
                 res.json({
                     "success":false,
-                    "message": `There was a problem: ${error}` 
+                    "message": message 
                 })
             }
             else { 
