@@ -22,9 +22,7 @@ app.use(express.static(__dirname + "/app/public"));
 // set up mongoose connection
 
 var mongoose = require("mongoose");
-var MONGODB = process.env.MONGODB_URI || "mongodb://localhost/smartlyrics";
-
-console.log("using this db:",MONGODB);
+var MONGODB = process.env.MONGODB_URI;
 
 mongoose.connect(  
   MONGODB,
