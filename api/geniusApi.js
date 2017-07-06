@@ -21,10 +21,13 @@ var genius = new api(process.env.GENIUS_CLIENT_ACCESS_TOKEN);
 
 module.exports = function(app) {
 
-// post request to search lyrics; using post because text entry might be lengthy
+// post request to search songs; using post because text entry might be lengthy
   app.post("/api/search", function(req, res) {
     if (req.body.input === "")
-      handleError(res, "Invalid input", "Must provide search terms.", 400);
+      res.json({
+        "success":false,
+        "message":"Your search request was blank. Try again!",
+        code:400})
     else {
       genius.search(req.body.input).then(function(response) {
         // Genius limits response to max 10
@@ -34,37 +37,40 @@ module.exports = function(app) {
         var songs = [];
 
         // get all of this user's favorite songs
-        axios.get(`https://smartlyricsapi.herokuapp.com/api/favorites/${req.body.user}`)
+        // 
+        axios.get    (`https://smartlyricsapi.herokuapp.com/${req.body.user}`)
             .then(function(favorites){
 
               // we only want the data part of the returned object
               favorites=favorites.data;
-              
-              // loop through each element of response to format results, including comparing 'favorite' status of any songs
+              var favorite = "";
+              // loop through each element of genius api response to format results, including adding a 'favorite' status based on a match with user favorites 
                 for (var i=0; i<raw.length; i++) {
-                  var searchSong = raw[i].result;
-                
-                    // loop through this user's favorites
-                    for (var j=0; j<favorites.length;j++){
-                      if (searchSong.id == favorites[j].song_id)
-                        searchSong.favorite = "favorite"
-                      else
-                        searchSong.favorite="";
-                    } // end use favorites loop
+                  
+                  // loop through this user's favorites
+                  for (var j=0; j<favorites.length;j++){
+                    raw[i].result.favorite = "";
+                  
+                    if (raw[i].result.id == favorites[j].song_id) {
+                      favorite = "favorite";
+                    }
+                  } // end user favorites loop
                   
                   //add this song, with updated favorite status, to songs array 
                   songs.push({
-                    title: searchSong.title,
-                    song_id: searchSong.id,
-                    thumb: searchSong.song_art_image_thumbnail_url,
-                    lyrics: searchSong.url,
-                    artist: searchSong.primary_artist.name,
-                    favorite: searchSong.favorite
+                    title: raw[i].result.title,
+                    song_id: raw[i].result.id,
+                    thumb: raw[i].result.song_art_image_thumbnail_url,
+                    lyrics: raw[i].result.url,
+                    artist: raw[i].result.primary_artist.name,
+                    favorite: favorite
                 });
-                } // end search result loop
 
-                // send updated array out to front end      
-                console.log(songs);
+                // reset favorite flag
+                favorite = "";
+
+                } // end search result loop
+                // send updated array out to front end
                 res.json({songs})
                   })
                   .catch(function (error) {
