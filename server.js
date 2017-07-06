@@ -37,7 +37,7 @@ db.on("error", function(error) {
 
 // Once connected to the db through mongoose, log a success message
 db.once("open", function() {
-  console.log("Mongoose connection successful.");
+  console.log(`Mongoose connected on ${MONGODB}.`);
 });
 
 // ===================================================

@@ -13,22 +13,22 @@ module.exports = function(app) {
   // Route to save our favorited song to mongoDB via mongoose
   app.post("/api/favorites", function(req, res) {
   
-  // req.body should include title , artist, song_id, image url, lyrics page url 
-  var favorite = new Favorite(req.body);
-  console.log("New favorite:",favorite);
+    // req.body should include title , artist, song_id, image url, lyrics page url 
+    var favorite = new Favorite(req.body);
+    console.log("New favorite:",favorite);
   
-  // Save new "Favorite" object to mongoDB
-  favorite.save(function(error, doc) {
-    // Send any errors to the browser
-    if (error) {
-      res.send(error);
-    }
-    // Otherwise, send success and song_id message back
-    else {
-      res.json({message:true,song_id:req.body.song_id});
-    }
+    // Save new "Favorite" object to mongoDB
+    favorite.save(function(error, doc) {
+      // Send any errors to the browser
+      if (error) {
+        res.send({success:false,message:error});
+      }
+      // Otherwise, send success and song_id message back
+      else {
+        res.json({success:true,song_id:req.body.song_id});
+      }
+    });
   });
-});
 
 
 // Route to retrieve and show user's favorited articles

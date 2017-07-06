@@ -6,6 +6,9 @@ function handleError(res, reason, message, code) {
 
 var axios = require("axios");
 
+// this will change depending on environment
+var resourceHost = process.env.DEV_API || "https://smartlyricsapi.herokuapp.com";
+
 // scraping tools
 // get html from URLs
 var request = require("request-promise");
@@ -38,7 +41,7 @@ module.exports = function(app) {
 
         // get all of this user's favorite songs
         // 
-        axios.get    (`https://smartlyricsapi.herokuapp.com/${req.body.user}`)
+        axios.get    (`${resourceHost}/api/favorites/${req.body.user}`)
             .then(function(favorites){
 
               // we only want the data part of the returned object
@@ -93,6 +96,7 @@ module.exports = function(app) {
 
 // lyrics scraping route
 app.post("/api/lyrics", function(req,res){
+  
   //lyric scraping happens here
   var urlSource = req.body.url;
 
@@ -103,6 +107,7 @@ app.post("/api/lyrics", function(req,res){
       }
   };
   request(options).then(function ($) {
+
       // lyrics will be text and additional info, so let's make it an object
       var lyrics = {
         title: req.body.title,
