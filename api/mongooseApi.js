@@ -35,7 +35,7 @@ module.exports = function(app) {
 app.get("/api/favorites/:user", function(req,res){
   console.log("retrieving favorites");
   // find favorites of currently logged-in user, passed through as a query parameter
-  Favorite.find({ user:req.params.user }, function(err, found){
+  Favorite.find({ user:req.params.user }).sort("artist").exec( function(err, found){
     if(err){
       console.log(err);
     }
