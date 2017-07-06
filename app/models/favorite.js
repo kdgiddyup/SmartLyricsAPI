@@ -14,21 +14,25 @@ var FavoriteSchema = new Schema({
   },
   // title: a string
   title: {
-    type: String
+    type: String,
+    unique: false
   },
   artist: {
-    type: String
+    type: String,
+    unique: false
   },
   // song_id: a number
   song_id: {
     type: Number,
-    unique: true
+    unique: false
   },
   image: {
-    type: String
+    type: String,
+    unique: false
   },
   lyrics: {
-    type: String
+    type: String,
+    unique: false
   }
 });
 
