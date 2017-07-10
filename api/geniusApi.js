@@ -5,6 +5,7 @@ function handleError(res, reason, message, code) {
 }
 
 var axios = require("axios");
+var cors = require("cors");
 
 // this will change depending on environment
 var resourceHost = process.env.DEV_API || "https://smartlyricsapi.herokuapp.com";
@@ -118,7 +119,7 @@ app.post("/api/lyrics", function(req,res){
       res.json(lyrics);
     })
     .catch(function (err) {
-        handleError(res, "Problemw with resource", "Could not return lyrics", 400); 
+        handleError(res, "Problem with resource", "Could not return lyrics", 400); 
     });
 
 });

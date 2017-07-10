@@ -4,6 +4,7 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
+var cors = require("cors");
 // we'll need our mongo models
 var Favorite = require("../app/models/favorite.js");
 var User = require("../app/models/user.js");
