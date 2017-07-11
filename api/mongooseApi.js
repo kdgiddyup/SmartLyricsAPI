@@ -22,7 +22,7 @@ module.exports = function(app) {
     favorite.save(function(error, doc) {
       // Send any errors to the browser
       if (error) {
-        res.send({success:false,message:error});
+        res.json({success:false,message:error});
       }
       // Otherwise, send success and song_id message back
       else {
