@@ -38,10 +38,10 @@ app.get("/api/favorites/:user", function(req,res){
   // find favorites of currently logged-in user, passed through as a query parameter
   Favorite.find({ user:req.params.user }).sort("artist").exec( function(err, found){
     if(err){
-      console.log(err);
+      res.json({success:false,message:err});
     }
     else{
-      res.json(found);
+      res.json({success:true,found});
     }
   });
 });
@@ -50,9 +50,9 @@ app.get("/api/favorites/:user", function(req,res){
 app.get("/api/remove/:id", function(req,res){
   Favorite.remove({song_id: req.params.id}, function(err){
     if (err) {
-      console.log('There was an error unfavoriting document:',err);
+      res.json({success:false,message:err});
     };
-    res.json({song:req.params.id});
+    res.json({success:true,song:req.params.id});
    });
 });
 
