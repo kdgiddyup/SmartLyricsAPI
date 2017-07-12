@@ -32,7 +32,7 @@ module.exports = function(app) {
         res.json(
           {
           success: true,
-          song_id : req.body.song_id
+          song : req.body.song
         });
       }
     });
