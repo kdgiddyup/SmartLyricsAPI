@@ -29,7 +29,7 @@ module.exports = function(app) {
       }
       // Otherwise, send success and song_id message back
       else {
-        console.log(req.body);
+        console.log("doc",doc);
         res.json(
           {
           success: true,
