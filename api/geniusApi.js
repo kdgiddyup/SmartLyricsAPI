@@ -44,10 +44,10 @@ module.exports = function(app) {
         // 
         axios.get    (`${resourceHost}/api/favorites/${req.body.user}`)
             .then(function(favorites){
-
+              console.log(favorites);
               // we only want the data part of the returned object
-              favorites=favorites.data;
-              var favorite = "";
+              favorites=favorites.data.data;
+              
               // loop through each element of genius api response to format results, including adding a 'favorite' status based on a match with user favorites 
                 for (var i=0; i<raw.length; i++) {
                   
