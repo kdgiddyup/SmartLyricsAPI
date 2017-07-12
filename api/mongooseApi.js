@@ -51,7 +51,7 @@ app.get("/api/favorites/:user", function(req,res){
       res.json({success:false,message:err});
     }
     else{
-      console.log("success",data);
+      console.log("success",found);
       res.json({success:true,data:found});
     }
   });
