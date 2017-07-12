@@ -27,6 +27,7 @@ module.exports = function(app) {
 
 // post request to search songs; using post because text entry might be lengthy
   app.post("/api/search", function(req, res) {
+   console.log(`hit search route at ${process.env.PORT}`);
     if (req.body.input === "")
       res.json({
         "success":false,
@@ -44,18 +45,18 @@ module.exports = function(app) {
         // 
         axios.get    (`${resourceHost}/api/favorites/${req.body.user}`)
             .then(function(favorites){
-              console.log(favorites);
+
               // we only want the data part of the returned object
               favorites=favorites.data.data;
-              
+              var favorite = "";
               // loop through each element of genius api response to format results, including adding a 'favorite' status based on a match with user favorites 
                 for (var i=0; i<raw.length; i++) {
                   
                   // loop through this user's favorites
                   for (var j=0; j<favorites.length;j++){
-                    raw[i].result.favorite = "";
+                    //raw[i].result.favorite = "";
                   
-                    if (raw[i].result.id == favorites[j].song_id) {
+                    if (raw[i].result.id === favorites[j].song_id) {
                       favorite = "favorite";
                     }
                   } // end user favorites loop
