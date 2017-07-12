@@ -47,6 +47,7 @@ app.get("/api/favorites/:user", function(req,res){
   // find favorites of currently logged-in user, passed through as a query parameter
   Favorite.find({ user:req.params.user }).sort("artist").exec( function(err, found){
     if(err){
+      console.log("error:",err);
       res.json({success:false,message:err});
     }
     else{
