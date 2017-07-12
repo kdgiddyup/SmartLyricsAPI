@@ -29,11 +29,12 @@ module.exports = function(app) {
       }
       // Otherwise, send success and song_id message back
       else {
-        console.log("doc",doc);
+        Favorite.find({_id : doc._id }, function(err,found) {
         res.json(
-          {
-          success: true,
-          song : req.body.song
+            {
+            success: true,
+            song : found
+          })
         });
       }
     });
