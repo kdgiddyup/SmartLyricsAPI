@@ -29,13 +29,13 @@ module.exports = function(app) {
       }
       // Otherwise, send success and song_id message back
       else {
-        Favorite.find({_id : doc._id }, function(err,found) {
+        // Favorite.find({_id : doc._id }, function(err,found) {
         res.json(
             {
             success: true,
-            song : found
+            song : req.body
           })
-        });
+        //});
       }
     });
   });
