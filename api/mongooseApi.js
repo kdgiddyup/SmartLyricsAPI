@@ -99,8 +99,13 @@ app.get("/api/remove/:id", function(req,res){
       User.findOne({'username' : req.body.username}, function (err, user) {
       if (err) console.log(err)
       else {
-        console.log("USER IS",user)
-          if (user.authenticate(req.body.password)) {
+          if (!user) {
+            res.json({
+              "success":false,
+              "message": "Unable to log you in. Try again!"            
+              })
+          }
+          else if (user.authenticate(req.body.password)) {
               res.json({
                 "success":true,
                 "user":req.body.username,
