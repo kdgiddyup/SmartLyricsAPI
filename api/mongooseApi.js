@@ -22,11 +22,18 @@ module.exports = function(app) {
     favorite.save(function(error, doc) {
       // Send any errors to the browser
       if (error) {
-        res.json({success:false,message:error});
+        res.json({
+          success:false,
+          message:error
+        });
       }
       // Otherwise, send success and song_id message back
       else {
-        res.json({success:true,song_id:req.body.song_id});
+        res.json(
+          {
+          success: true,
+          song_id : req.body.song_id
+        });
       }
     });
   });
