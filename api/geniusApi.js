@@ -120,7 +120,7 @@ app.post("/api/lyrics", function(req,res){
       res.json(lyrics);
     })
     .catch(function (err) {
-        handleError(res, "Problem with resource", "Could not return lyrics", 400); 
+        handleError(err, "Problem with resource", "Could not return lyrics", 400); 
     });
 
 });
