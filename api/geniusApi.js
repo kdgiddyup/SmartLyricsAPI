@@ -1,9 +1,3 @@
-// Generic error handler used by all endpoints.
-function handleError(res, reason, message, code) {
-  console.log("ERROR: " + reason);
-  res.status(code || 500).json({"error": message});
-}
-
 var axios = require("axios");
 var cors = require("cors");
 
@@ -110,20 +104,26 @@ app.post("/api/lyrics", function(req,res){
   };
   request(options).then(function ($) {
 
+      lyricsHTML = $(".lyrics").html();
+      // error?
+      if (lyricsHTML === "" || !lyricsHTML) {
+        res.json({
+          "success":false,
+          "message":"There was a problem fetching lyrics for this song."
+        })
+      }
+      else {
       // lyrics will be text and additional info, so let's make it an object
-      var lyrics = {
-        title: req.body.title,
-        artist: req.body.artist,
-        image: req.body.image
+      res.json({
+        "success":true,
+        "response": {
+          "title": req.body.title,
+          "artist": req.body.artist,
+          "image": req.body.image,
+          "lyrics": lyricsHTML
+          }
+        })
       };
-      lyrics.text = $(".lyrics").html();
-      res.json(lyrics);
     })
-    .catch(function (err) {
-        handleError(err, "Problem with resource", "Could not return lyrics", 400); 
-    });
-
-});
-
-
-};
+  })
+}
