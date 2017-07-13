@@ -92,7 +92,7 @@ module.exports = function(app) {
 
 // lyrics scraping route
 app.post("/api/lyrics", function(req,res){
-  
+
   //lyric scraping happens here
   var urlSource = req.body.url;
 
@@ -102,9 +102,12 @@ app.post("/api/lyrics", function(req,res){
           return cheerio.load(body);
       }
   };
+  
+
   request(options).then(function ($) {
 
-      lyricsHTML = $(".lyrics").html();
+      const lyricsHTML = $(".lyrics").html();
+      
       // error?
       if (lyricsHTML === "" || !lyricsHTML) {
         res.json({
