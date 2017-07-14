@@ -24,12 +24,12 @@ module.exports = function(app) {
     favorite.save(function(error, doc) {
       // Send any errors to the browser
       if (error) {
-        if (error.code == 11000) {
-            var message = "Song already exists; ignored."
+        if (error.code === 11000) {
+            var error = "Song already exists: Unfavoriting."
           }
         res.json({
           success:false,
-          message:error
+          message: error
         });
       }
       // Otherwise, send success and song_id message back
