@@ -25,7 +25,7 @@ module.exports = function(app) {
       // Send any errors to the browser
       if (error) {
         if (error.code === 11000) {
-            var error = "Song already exists: Unfavoriting."
+            var error = "duplicate"
           }
         res.json({
           success:false,
