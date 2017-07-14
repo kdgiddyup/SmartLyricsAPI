@@ -61,9 +61,15 @@ app.get("/api/favorites/:user", function(req,res){
 app.get("/api/remove/:id", function(req,res){
   Favorite.remove({song_id: req.params.id}, function(err){
     if (err) {
-      res.json({success:false,message:err});
+      res.json({
+        success:false,
+        message:err
+      });
     };
-    res.json({success:true,song:req.params.id});
+    res.json({
+      success:true,
+      song:req.params.id
+    });
    });
 });
 
