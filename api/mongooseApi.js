@@ -29,15 +29,13 @@ module.exports = function(app) {
           message: error
         });
       }
-      // Otherwise, send success and song_id message back
+      // Otherwise, send success and song object back
       else {
-        // Favorite.find({_id : doc._id }, function(err,found) {
         res.json(
             {
             success: true,
             song : req.body
           })
-        //});
       }
     });
   });
