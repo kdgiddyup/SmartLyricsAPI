@@ -24,9 +24,6 @@ module.exports = function(app) {
     favorite.save(function(error, doc) {
       // Send any errors to the browser
       if (error) {
-        if (error.code === 11000) {
-            var error = "duplicate"
-          }
         res.json({
           success:false,
           message: error
