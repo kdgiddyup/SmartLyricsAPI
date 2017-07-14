@@ -4,7 +4,9 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
+// allow requests from all domains
 var cors = require("cors");
+
 // we'll need our mongo models
 var Favorite = require("../app/models/favorite.js");
 var User = require("../app/models/user.js");
@@ -22,6 +24,9 @@ module.exports = function(app) {
     favorite.save(function(error, doc) {
       // Send any errors to the browser
       if (error) {
+        if (error.code == 11000) {
+            var message = "Song already exists; ignored."
+          }
         res.json({
           success:false,
           message:error

@@ -24,7 +24,7 @@ var FavoriteSchema = new Schema({
   // song_id: a number
   song_id: {
     type: Number,
-    unique: false
+    unique: true
   },
   image: {
     type: String,
