@@ -59,7 +59,7 @@ module.exports = function(app) {
                   songs.push({
                     title: raw[i].result.title,
                     song_id: raw[i].result.id,
-                    thumb: raw[i].result.song_art_image_thumbnail_url,
+                    image: raw[i].result.song_art_image_thumbnail_url,
                     lyrics: raw[i].result.url,
                     artist: raw[i].result.primary_artist.name,
                     favorite: favorite
