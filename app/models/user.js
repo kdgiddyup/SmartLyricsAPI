@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
  
 var userSchema = new mongoose.Schema({
   // basic-auth-mongoose plugin will add user/pass fields
+  favorites : Array
 });
 
 //To add authentication functionality, all you need to do is plugin basic-auth, and create your new User model:

@@ -1,27 +1,28 @@
-// Generic error handler used by all endpoints.
-function handleError(res, reason, message, code) {
-  console.log("ERROR: " + reason);
-  res.status(code || 500).json({"error": message});
-}
-
 // allow requests from all domains
 var cors = require("cors");
 
 // we'll need our mongo models
-var Favorite = require("../app/models/favorite.js");
+//var Favorite = require("../app/models/favorite.js");
 var User = require("../app/models/user.js");
 
 module.exports = function(app) {
   
   // Route to save our favorited song to mongoDB via mongoose
-  app.post("/api/favorites", function(req, res) {
+  app.post("/api/favorite/:user", function(req, res) {
   
-    // req.body should include title , artist, song_id, image url, lyrics page url 
-    var favorite = new Favorite(req.body);
-    console.log("New favorite:",favorite);
-  
-    // Save new "Favorite" object to mongoDB
-    favorite.save(function(error, doc) {
+    // favorite object (req.body) looks like:  
+    // {"title":"","artist":"","song_id":"","image":"","lyrics":""}
+
+    // Save new "Favorite" object to mongoDB by adding to the User's favorite's array:
+    // 1. Find the user by the passed in user parameter
+    // 2. push the req.body object to this user's favorites field (an array)
+    // 3. sort the array asc ("1") by the artist field 
+    // 4. send error or success message back to client 
+    User.findOneAndUpdate(
+      { username: req.params.user }, 
+      { $push: { favorites: { $each: [req.body], $sort: {"artist":1} } } },
+      { upsert: true, new:true },
+      function( error, doc) {
       // Send any errors to the browser
       if (error) {
         res.json({
@@ -40,26 +41,31 @@ module.exports = function(app) {
     });
   });
 
-
 // Route to retrieve and show user's favorited articles
 app.get("/api/favorites/:user", function(req,res){
-  console.log("retrieving favorites");
-  // find favorites of currently logged-in user, passed through as a query parameter
-  Favorite.find({ user:req.params.user }).sort("artist").exec( function(err, found){
-    if(err){
-      console.log("error:",err);
-      res.json({success:false,message:err});
-    }
-    else{
-      console.log("success",found);
-      res.json({success:true,data:found});
-    }
-  });
+    // retrieve favorites of currently logged-in user, passed through as a query parameter
+    User.findOne({ username:req.params.user }, "favorites", function(err, found){
+      if(err){
+        console.log("error:",err);
+        res.json({success:false,message:err});
+      }
+      else{
+
+        if (found === null) 
+          found=[];
+        // when data is present, found looks like:  [{"artist":"","favorite":"","image":"","lyrics":"","song_id":"","title":""}, ... ]
+        res.json({success:true,data:found});
+      }
+    });
 });
 
-// Route to remove favorited article
-app.get("/api/remove/:id", function(req,res){
-  Favorite.remove({song_id: req.params.id}, function(err){
+// Route to remove favorited song
+app.get("/api/remove/:user/:id", function(req,res){
+
+  console.log(`attempting to remove ${req.params.id} for user ${req.params.user}`);
+
+  // we find our user and update their favorites array using the $pull operator:
+  User.findOneAndUpdate({ username: req.params.user }, {$pull: { "favorites" : {"song_id":req.params.id} } }, function(err){
     if (err) {
       res.json({
         success:false,

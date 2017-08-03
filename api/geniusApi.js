@@ -3,6 +3,7 @@ var cors = require("cors");
 
 // this will change depending on environment
 var resourceHost = process.env.DEV_API || "https://smartlyricsapi.herokuapp.com";
+//var resourceHost = "http://localhost:3002";
 
 // scraping tools
 // get html from URLs
@@ -37,11 +38,11 @@ module.exports = function(app) {
 
         // get all of this user's favorite songs
         // 
-        axios.get    (`${resourceHost}/api/favorites/${req.body.user}`)
-            .then(function(favorites){
+        axios.get(`${resourceHost}/api/favorites/${req.body.user}`)
+            .then(function(favsData){
 
-              // we only want the data part of the returned object
-              favorites=favorites.data.data;
+              // we only want the favorites array part of the returned object
+              favorites=favsData.data.data.favorites;
               var favorite = "";
               // loop through each element of genius api response to format results, including adding a 'favorite' status based on a match with user favorites 
                 for (var i=0; i<raw.length; i++) {
@@ -50,7 +51,7 @@ module.exports = function(app) {
                   for (var j=0; j<favorites.length;j++){
                     //raw[i].result.favorite = "";
                   
-                    if (raw[i].result.id === favorites[j].song_id) {
+                    if (Number(raw[i].result.id) === Number(favorites[j].song_id)) {
                       favorite = "favorite";
                     }
                   } // end user favorites loop
